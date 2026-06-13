@@ -78,7 +78,24 @@ exports.getMyOrders=async(userId)=>{
 
 // Add this new service
 exports.getAllOrders = async () => {
-    return await orderRepo.findAllOrders();
+    const orders = await orderRepo.findAllOrders();
+    const ordersWithItems = await Promise.all(
+        orders.map(async (order) => {
+            const items = await orderItemRepo.findByOrder(order._id);
+            const itemsWithBook = items.map(item => {
+                const itemObj = typeof item.toObject === 'function' ? item.toObject() : item;
+                return {
+                    ...itemObj,
+                    book: itemObj.bookId
+                };
+            });
+            return {
+                ...order,
+                items: itemsWithBook
+            };
+        })
+    );
+    return ordersWithItems;
 };
 
 exports.getOrderById = async(orderId,userId)=>{
