@@ -100,3 +100,25 @@ exports.deleteUser = async (userId) => {
     }
     return result;
 };
+
+exports.changePassword = async (userId, currentPassword, newPassword) => {
+    if (!currentPassword || !newPassword) {
+        throw createError("Current password and new password are required", 400);
+    }
+
+    const user = await userRepository.findUserByIdWithPassword(userId);
+    if (!user) {
+        throw createError("User not found", 404);
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+        throw createError("Incorrect current password", 400);
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return { message: "Password updated successfully" };
+};

@@ -3,7 +3,6 @@ const { findBookByIdRepository } = require("../repositories/book.repository");
 const { findChapterByIdRepository } = require("../repositories/chapter.repository");
 
 exports.createNoteService = async (noteData) => {
-    // check if book and chapter exist
 
     const book = await findBookByIdRepository(noteData.book);
     if (!book) {

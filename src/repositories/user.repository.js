@@ -23,3 +23,7 @@ exports.updateUser = async (userId, updateData) => {
 exports.deleteUser = async (userId) => {
     return await User.findByIdAndDelete(userId);
 };
+
+exports.findUserByIdWithPassword = async (userId) => {
+    return await User.findById(userId).select("+password");
+};

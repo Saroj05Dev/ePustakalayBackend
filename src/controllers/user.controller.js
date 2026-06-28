@@ -157,3 +157,29 @@ exports.deleteUser = async (req, res) => {
         });
     }
 };
+
+exports.changePassword = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { currentPassword, newPassword } = req.body;
+
+        await userService.changePassword(userId, currentPassword, newPassword);
+
+        res.status(200).json({
+            success: true,
+            message: "Password changed successfully",
+            data: {},
+            error: {}
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Failed to change password",
+            data: {},
+            error: {
+                statusCode: error.statusCode || 500,
+                isOperational: true
+            }
+        });
+    }
+};
