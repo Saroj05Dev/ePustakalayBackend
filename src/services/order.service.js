@@ -25,10 +25,6 @@ exports.createOrder = async(userId,data)=>{
 
     let totalAmount = 0; 
 
-    // cart.items.forEach((item)=>{
-    //     totalAmount += item.bookId.price * item.quantity;
-    // })
-
     for(const item of items){
 
         if(!item.bookId){
@@ -160,4 +156,4 @@ exports.deleteOrder = async (orderId) => {
         throw error;
     }
     return await orderRepo.deleteOrder(orderId);
-};
+};
