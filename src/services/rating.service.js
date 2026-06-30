@@ -1,7 +1,7 @@
 const ratingRepo = require("../repositories/rating.repository");
 
 
-exports.addRating= async (bookId,userId,rating) => {
+exports.addRating= async (bookId,userId,rating,review,orderId) => {
 
   const existingRating = await ratingRepo.findUserRating(
     bookId,
@@ -11,7 +11,8 @@ exports.addRating= async (bookId,userId,rating) => {
   if (existingRating) {
     return await ratingRepo.updateRating(
       existingRating._id,
-      rating
+      rating,
+      review
     );
   }
 
@@ -19,6 +20,8 @@ exports.addRating= async (bookId,userId,rating) => {
     bookId,
     userId,
     rating,
+    review,
+    orderId
   });
 };
 
@@ -31,7 +34,8 @@ exports.getRating = async (bookId,userId) => {
     return {
       averageRating: 0,
       totalRatings: 0,
-      userRating:null
+      userRating:null,
+      reviews: []
     };
   }
 
@@ -40,15 +44,24 @@ exports.getRating = async (bookId,userId) => {
     0
   );
 
+  const reviewsList = ratings.map(r => ({
+    _id: r._id,
+    rating: r.rating,
+    review: r.review || "",
+    createdAt: r.createdAt,
+    userName: r.userId?.name || "Anonymous Reader"
+  }));
+
   return {
     averageRating:
       total / ratings.length,
     totalRatings: ratings.length,
-    userRating
+    userRating,
+    reviews: reviewsList
   };
 };
 
-exports.updateRating = async(id,rating)=>{
+exports.updateRating = async(id,rating,review)=>{
 
-  return await ratingRepo.updateRating(id,rating);
+  return await ratingRepo.updateRating(id,rating,review);
 };

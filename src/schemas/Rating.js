@@ -21,6 +21,14 @@ const ratingSchema = new mongoose.Schema(
             required:true,
             min:1,
             max:5
+        },
+        review:{
+            type:String,
+            default:""
+        },
+        orderId:{
+            type:String,
+            ref:"Order"
         }
 },{timestamps:true});
 
