@@ -68,13 +68,49 @@ exports.getMyOrders=async(userId)=>{
         throw new Error("User not found");
     }
 
-    const order = await orderRepo.findByUser(userId);
-    return order;
+    const orders = await orderRepo.findByUser(userId);
+    const ordersWithItems = [];
+    for (const order of orders) {
+        const items = await orderItemRepo.findByOrder(order._id);
+        ordersWithItems.push({
+            ...order.toObject(),
+            items: items.map(item => ({
+                ...item.toObject(),
+                book: item.bookId
+            }))
+        });
+    }
+    return ordersWithItems;
 };
 
 // Add this new service
 exports.getAllOrders = async () => {
-    return await orderRepo.findAllOrders();
+    const orders = await orderRepo.findAllOrders();
+    const ordersWithItems = [];
+    for (const order of orders) {
+        const items = await orderItemRepo.findByOrder(order._id);
+        ordersWithItems.push({
+            ...order,
+            items: items.map(item => ({
+                ...item.toObject(),
+                book: item.bookId
+            }))
+        });
+    }
+    return ordersWithItems;
+};
+
+exports.markOrderAsRated = async (orderId, userId) => {
+    const order = await orderRepo.findById(orderId);
+    if (!order) {
+        throw new Error("Order not found");
+    }
+    if (order.userId !== userId) {
+        throw new Error("You can only rate your own order");
+    }
+    order.isRated = true;
+    await order.save();
+    return order;
 };
 
 exports.getOrderById = async(orderId,userId)=>{

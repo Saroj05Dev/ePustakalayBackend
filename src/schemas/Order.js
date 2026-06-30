@@ -46,6 +46,10 @@ const orderSchema = new mongoose.Schema({
             required:true
         }
 
+    },
+    isRated:{
+        type:Boolean,
+        default:false
     }
 
 },{timestamps:true}

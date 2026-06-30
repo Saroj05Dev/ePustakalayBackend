@@ -183,4 +183,30 @@ exports.deleteOrder = async (req, res) => {
             }
         });
     }
+};
+
+exports.markOrderAsRated = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const userId = req.user.id;
+
+        const data = await orderService.markOrderAsRated(orderId, userId);
+
+        res.status(200).json({
+            success: true,
+            message: "Order marked as rated successfully",
+            data: data,
+            error: {}
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message,
+            data: {},
+            error: {
+                "statusCode": error.statusCode || 500,
+                "isOperational": error.isOperational || false
+            }
+        });
+    }
 };

@@ -8,14 +8,18 @@ exports.findUserRating=async(bookId,userId)=>{
     return await Rating.findOne({bookId,userId});
 };
 
-exports.updateRating=async(id,rating)=>{
+exports.updateRating=async(id,rating,review)=>{
+    const updateData = { rating };
+    if (review !== undefined) {
+        updateData.review = review;
+    }
     return await Rating.findByIdAndUpdate(
         id,
-        {rating},
+        updateData,
         {new:true}
     );
 };
 
 exports.getRatings = async(bookId)=>{
-    return await Rating.find({bookId})
+    return await Rating.find({bookId}).populate("userId", "name");
 };
