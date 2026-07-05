@@ -7,7 +7,9 @@ exports.createHighlight = async (req, res) => {
         user: req.user.id,
         book: req.body.book,
         chapter: req.body.chapter,
-        selectedText: req.body.selectedText
+        text: req.body.text,
+        color: req.body.color || 'yellow',
+        pageNumber: req.body.pageNumber
     };
 
     try {

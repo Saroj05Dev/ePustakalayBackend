@@ -16,7 +16,7 @@ const getChaptersByBookRepository = async (bookId) => {
         book: bookId,
     })
         .sort({ chapter_number: 1 })
-        .select("chapter_title chapter_number context");
+        .select("chapter_title chapter_number context description start_page end_page duration_minutes");
 };
 
 const updateChapterRepository = async (chapterId, data) => {

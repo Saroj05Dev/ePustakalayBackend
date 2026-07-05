@@ -25,12 +25,23 @@ const highlightSchema = new mongoose.Schema({
         required: [true, 'Chapter is required']
     },
 
-    selectedText: {
+    text: {
         type: String,
         required: [true, 'Selected text is required'],
         trim: true,
         minlength: [1, 'Selected text must be at least 1 character'],
         maxlength: [1000, 'Selected text cannot exceed 1000 characters']
+    },
+
+    color: {
+        type: String,
+        enum: ['yellow', 'pink', 'green', 'blue'],
+        default: 'yellow'
+    },
+
+    pageNumber: {
+        type: Number,
+        min: [1, 'Page number must be at least 1']
     }
 }, {
     timestamps: true

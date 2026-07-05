@@ -34,7 +34,7 @@ const findAllBookmarksRepository = async (userId) => {
         user: userId,
     })
         .populate("book")
-        .populate("chapter")
+        .populate("chapter", "chapter_title chapter_number start_page end_page")
         .sort({ created_at: -1 });
 };
 

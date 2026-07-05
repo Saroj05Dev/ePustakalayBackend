@@ -28,11 +28,37 @@ const chapterSchema = new mongoose.Schema(
             min: [1, "Chapter number must be greater than 0"],
         },
 
-        context: {
+        // Brief description/summary of the chapter (optional)
+        description: {
             type: String,
             trim: true,
-            minlength: [5, "Context must be at least 5 characters"],
-            maxlength: [1000, "Context cannot exceed 1000 characters"],
+            maxlength: [500, "Description cannot exceed 500 characters"],
+        },
+
+        // Page range in the PDF where this chapter starts
+        start_page: {
+            type: Number,
+            required: [true, "Start page is required"],
+            min: [1, "Start page must be greater than 0"],
+        },
+
+        // Page range in the PDF where this chapter ends
+        end_page: {
+            type: Number,
+            required: [true, "End page is required"],
+            min: [1, "End page must be greater than 0"],
+            validate: {
+                validator: function(value) {
+                    return value >= this.start_page;
+                },
+                message: "End page must be greater than or equal to start page"
+            }
+        },
+
+        // Duration estimate in minutes (optional - calculated from page count)
+        duration_minutes: {
+            type: Number,
+            min: [1, "Duration must be greater than 0"],
         },
     },
     {
