@@ -17,7 +17,7 @@ exports.getAllUsers = async () => {
 };
 
 exports.updateUser = async (userId, updateData) => {
-    return await User.findByIdAndUpdate(userId, updateData, { new: true }).select("-password");
+    return await User.findByIdAndUpdate(userId, updateData, { returnDocument: 'after' }).select("-password");
 };
 
 exports.deleteUser = async (userId) => {

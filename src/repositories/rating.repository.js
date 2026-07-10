@@ -16,7 +16,7 @@ exports.updateRating=async(id,rating,review)=>{
     return await Rating.findByIdAndUpdate(
         id,
         updateData,
-        {new:true}
+        {returnDocument:'after'}
     );
 };
 
