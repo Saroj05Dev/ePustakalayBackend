@@ -2,7 +2,8 @@
 const {
     createReadingProgressRepository,
     getBookProgressRepository,
-    updateReadingProgressRepository
+    updateReadingProgressRepository,
+    getAllUserProgressRepository
 } = require("../repositories/progress.repository");
 
 const createReadingProgressService =
@@ -84,8 +85,19 @@ const updateReadingProgressService =
         );
     };
 
+const getAllUserProgressService =
+    async (
+        userId
+    ) => {
+
+        return await getAllUserProgressRepository(
+            userId
+        );
+    };
+
 module.exports = {
     createReadingProgressService,
     getBookProgressService,
     updateReadingProgressService,
+    getAllUserProgressService,
 };

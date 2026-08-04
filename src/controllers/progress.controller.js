@@ -3,6 +3,7 @@ const {
     createReadingProgressService,
     getBookProgressService,
     updateReadingProgressService,
+    getAllUserProgressService,
 } = require("../services/progress.service");
 
 const createReadingProgress = async (
@@ -108,8 +109,40 @@ const updateReadingProgress = async (
     }
 };
 
+const getAllUserProgress = async (
+    req,
+    res
+) => {
+
+    try {
+
+        const userId =
+            req.user.id;
+
+        const result =
+            await getAllUserProgressService(
+                userId
+            );
+
+        return res.status(200).json({
+            success: true,
+            message:
+                "User progress fetched successfully",
+            data: result,
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createReadingProgress,
     getBookProgress,
     updateReadingProgress,
+    getAllUserProgress,
 };

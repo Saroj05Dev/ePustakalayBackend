@@ -5,7 +5,9 @@ const router = express.Router();
 
 const {
     createReadingProgress,
-    getBookProgress, updateReadingProgress
+    getBookProgress, 
+    updateReadingProgress,
+    getAllUserProgress
 } = require("../controllers/progress.controller");
 
 const {
@@ -18,6 +20,13 @@ router.post(
     auth,
     authorizeRole(["user"]),
     createReadingProgress
+);
+
+router.get(
+    "/user/all",
+    auth,
+    authorizeRole(["user"]),
+    getAllUserProgress
 );
 
 router.get(
